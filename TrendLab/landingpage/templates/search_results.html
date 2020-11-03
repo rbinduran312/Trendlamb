@@ -1,0 +1,654 @@
+{% extends 'landingpage_base.html' %}
+{% load static %}
+
+{% block metatag %}
+    <title>TrendLab. - Trends and Insights Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="description" content="Premium Bootstrap 4 Landing Page Template" /> -->
+    <!-- <meta name="keywords" content="bootstrap 4, premium, marketing, multipurpose" /> -->
+    <meta content="Shreethemes" name="author" />
+
+{% endblock %}
+
+{% block pagedetails %}
+        <!-- Hero Start -->
+        <section class="bg-half bg-light">
+            <div class="home-center">
+                <div class="home-desc-center">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 text-center">
+                                <div class="text-center subcribe-form pt-5 pb-5 pt-md-3 pb-md-3 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1800" style="position:relative;">
+                                    <form autocomplete="off" id="search-form">
+                                        <div class="form-group mb-0">
+                                          <input id="trend-search-input" class="shadow bg-white rounded-pill" required="" type="text" placeholder="Enter a search term or a topic">
+                                          <!-- <input type="email" id="email" name="email" class="shadow bg-white rounded-pill" required="" placeholder="Enter a search term or a topic"> -->
+                                          <button class="btn btn-primary rounded-pill search-text-btn">Search</button>
+                                        </div>
+                                        <div class="form-group mb-0 autocomplete-container" id="autocomplete-parent-div" style="display:none;">
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="page-next-level pt-5">
+
+                                </div>
+                            </div>  <!--end col-->
+                        </div><!--end row-->
+                    </div> <!--end container-->
+                </div>
+            </div>
+        </section><!--end section-->
+        <!-- Hero End -->
+
+        <!-- Shape Start -->
+        <div class="position-relative">
+            <div class="shape overflow-hidden text-white">
+                <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
+        <!--Shape End-->
+
+        <!-- Start Work Detail -->
+        {% if search_term_name and search_term_name != '' %}
+        <section class="section pt-0">
+            <div class="container">
+                <div class="row pt-5">
+                    <h4 class="col-6 title"> {{ search_term_name }} <button href="#" class="btn btn-outline-primary btn-sm ml-2"> Follow </button></h4>
+                    <div class="col-6">
+                        <button class="btn btn-outline-primary float-right" onclick="window.print()">Download PDF</button>
+                    </div>
+                    <div class="col-6">
+                        <ul class="list-unstyled mt-2">
+                            <li class="list-inline-item h6 user text-muted mr-2"> <span class="badge badge-success btn-sm"> Exploding </span></li>
+                            <li class="list-inline-item h6 user text-muted mr-2"> <span class="text-dark">Monthly Search Volume :</span> 120K</li>
+                            <li class="list-inline-item h6 user text-muted mr-2"> <span class="text-dark">Gradient :</span> 7.3  <span class="text-dark"> Exponent :</span> 1.5</li>
+                            <li class="list-inline-item h6 date text-muted"> <span class="text-dark">Date :</span> 23th Sep, 2020</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 dropdown mt-2">
+                        <button class="btn btn-outline-light dropdown-toggle float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {% if current_country %}
+                           {% if current_country == ' ' %}
+                            Worldwide
+                           {% else%}
+                           {{ current_country_name}}
+                           {% endif %}
+
+                           {% else %}
+                           Worldwide
+                           {% endif %}
+                        </button>
+                        <div class="dropdown-menu" id="dropdown_local" aria-labelledby="dropdownMenuButton" style="max-height:200px;overflow-y:scroll;">
+                          {% if current_country != '' %}
+                            <a class="dropdown-item" href="#" data-country=''>Worldwide</a>
+                          {% endif %}
+                          {% if countries %}
+                          {% for country in countries %}
+                            <a class="dropdown-item" href="#" data-country='{{country.alpha_2}}'>{{country.name}}</a>
+                          {% endfor %}
+                          {% else %}
+                          <a class="dropdown-item" href="#" data-country=''>Worldwide</a>
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+
+                    <div class="p-0">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded" id="pills-tab" role="tablist">
+                                    <li class="nav-item" id="toggle_interest_all">
+                                        <a class="nav-link rounded {% if timespan == 'all' %}active{% endif %}" id="interest-all-tab" data-toggle="pill" href="#interest-all" role="tab" aria-controls="interest-all" aria-selected="false">
+                                            <div class="text-center pt-1 pb-1">
+                                                <h4 class="title font-weight-normal mb-0">Lifetime</h4>
+                                            </div>
+                                        </a><!--end nav link-->
+                                    </li><!--end nav item-->
+                                    <li class="nav-item" id="toggle_interest_5year">
+                                        <a class="nav-link rounded {% if timespan == '' or timespan == 'today 5-y' %}active{% endif %}" id="interest-5year-tab" data-toggle="pill" href="#interest-5year" role="tab" aria-controls="interest-5year" aria-selected="false">
+                                            <div class="text-center pt-1 pb-1">
+                                                <h4 class="title font-weight-normal mb-0">5 Years</h4>
+                                            </div>
+                                        </a><!--end nav link-->
+                                    </li><!--end nav item-->
+
+                                    <li class="nav-item" id="toggle_year_filter">
+                                        <a class="nav-link rounded {% if timespan == 'yearfilter' %}active{% endif %}"  id="interest-12month-tab" data-toggle="pill" href="#interest-12month" role="tab" aria-controls="interest-12month" aria-selected="false">
+                                            <div class="text-center pt-1 pb-1">
+                                                <h4 class="title font-weight-normal mb-0">12 Months</h4>
+                                            </div>
+                                        </a><!--end nav link-->
+                                    </li><!--end nav item-->
+
+                                    <li class="nav-item" id="toggle_today1_m">
+                                        <a class="nav-link rounded {% if timespan == 'today 1-m' %}active{% endif %}" id="interest-1month-tab" data-toggle="pill" href="#interest-1month" role="tab" aria-controls="interest-1month" aria-selected="false">
+                                            <div class="text-center pt-1 pb-1">
+                                                <h4 class="title font-weight-normal mb-0">30 Days</h4>
+                                            </div>
+                                        </a><!--end nav link-->
+                                    </li><!--end nav item-->
+                                    <li class="nav-item" id="toggle_now_7d">
+                                        <a class="nav-link rounded {% if timespan == 'now 7-d' %}active{% endif %}" id="interest-7days-tab" data-toggle="pill" href="#interest-7days" role="tab" aria-controls="interest-7days" aria-selected="false">
+                                            <div class="text-center pt-1 pb-1">
+                                                <h4 class="title font-weight-normal mb-0">Last Week</h4>
+                                            </div>
+                                        </a><!--end nav link-->
+                                    </li><!--end nav item-->
+                                </ul><!--end nav pills-->
+                            </div><!--end col-->
+                        </div><!--end row-->
+
+                        <div class="row pt-2">
+                            <div class="col-12">
+{#                                <img id="load_img" src="{% static 'images/350.gif' %}" class="center">#}
+                                <div class="loader" id="load_img" style="display: none"></div>
+                                <div class="tab-content" id="timeSpan-tabContent">
+                                    <div class="tab-pane fade {% if timespan == 'all' %}show active{% endif %}" id="interest-all" role="tabpanel" aria-labelledby="interest-all-tab">
+                                        <div class="col-12 text-center" style="position: relative; height:40vh; width:80vw">
+                                            <canvas id="allinterest"></canvas>
+                                        </div>
+                                    </div><!--end teb pane-->
+
+                                    <div class="tab-pane fade {% if timespan == '' or timespan == 'today 5-y' %}show active{% endif %}" id="interest-5year" role="tabpanel" aria-labelledby="interest-5year-tab">
+                                        <div class="col-12 text-center" style="position: relative; height:40vh; width:80vw">
+                                            <canvas id="5yearinterest"></canvas>
+                                        </div>
+                                    </div><!--end teb pane-->
+
+                                    <div class="tab-pane fade {% if timespan == year_filter %}show active{% endif %}" id="interest-12month" role="tabpanel" aria-labelledby="interest-12month-tab">
+                                        <div class="col-12 text-center" style="position: relative; height:40vh; width:80vw">
+                                          <canvas id="12monthinterest"></canvas>
+                                        </div>
+                                    </div><!--end teb pane-->
+
+                                    <div class="tab-pane fade {% if timespan == 'today 1-m' %}show active{% endif %}" id="interest-1month" role="tabpanel" aria-labelledby="interest-1month-tab">
+                                        <div class="col-12 text-center" style="position: relative; height:40vh; width:80vw">
+                                          <canvas id="30dayinterest"></canvas>
+                                        </div>
+                                    </div><!--end teb pane-->
+
+                                    <div class="tab-pane fade {% if timespan == 'now 7-d' %} show active{% endif %}" id="interest-7days" role="tabpanel" aria-labelledby="interest-7days-tab">
+                                        <div class="col-12 text-center" style="position: relative; height:40vh; width:80vw">
+                                          <canvas id="7daysinterest"></canvas>
+                                        </div>
+                                    </div><!--end teb pane-->
+                                </div><!--end tab content-->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+
+            <!-- Nav Tabs End -->
+
+                    <div class="col-md-10 mt-4 pt-2">
+                        <h6><i class="mdi mdi-tag text-primary mr-1"></i><a href="javscript:void(0)" class="text-primary">{{ search_term_name }}</a> <a href="javscript:void(0)" class="text-primary"></a></h6>
+                        <div class="bg-light rounded p-4">
+                            <p class="text-muted font-italic mb-0">
+                              {% if wikipedia_summary and wikipedia_summary.0 != '' and wikipedia_summary.1 == 'links' %}
+                                Did you mean...
+                                {{ wikipedia_summary.0 |safe }}
+                              {% elif wikipedia_summary and wikipedia_summary.0 != '' and wikipedia_summary.1 == 'summary' %}
+                              "
+                              {{ wikipedia_summary.0 }} ...
+                              "
+                              {% else %}
+                              No summary available ...
+                              {% endif %}
+                             </p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col mt-4 pt-2">
+                                <div class="sidebar component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Top articles</h4>
+                                    </div>
+                                    <!-- RECENT POST -->
+                                    <div class="widget p-4">
+                                        <div class="" id="news-items-div">
+
+                                        </div>
+                                    </div>
+                                    <div class="pr-4 pl-4 pb-4 text-center text-muted" id="news-items-nav">
+                                    </div>
+                                    <!-- RECENT POST -->
+                                </div>
+                            </div>
+
+                            <!-- Progressbar Start -->
+                            <div class="col mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Top Regions</h4>
+                                    </div>
+                                    <div class="pr-4 pl-4 pt-0 pb-4" id="">
+                                      <div id="region-interest-div">
+                                      </div>
+
+                                    <div class="pr-4 pl-4 pt-4 text-center text-muted" id="top-regions-nav">
+                                    </div>
+
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <!-- Progressbar End -->
+                        </div>
+
+                        <div class="row">
+                            <!-- Table Start -->
+                            <div class="col mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Related Topics</h4>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="table-responsive bg-white">
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                    <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Topic</th>
+                                                    <th scope="col">Rank</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="related-topic-tbody">
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="pr-4 pl-4 pb-4 text-center text-muted" id="related-topic-nav">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Table End -->
+                            <!-- Table Start -->
+                            <div class="col mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Related Search Terms</h4>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="table-responsive bg-white">
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                    <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Term</th>
+                                                    <th scope="col">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="related-queries-tbody">
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="pr-4 pl-4 pb-4 text-center text-muted" id="related-queries-nav">
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Table End -->
+                        </div>
+
+                        <div class="row">
+                            <!-- Table Start -->
+                            <div class="col mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Top Instagram Influencers</h4>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="table-responsive bg-white">
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                    <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">@username</th>
+                                                    <th scope="col">Followers</th>
+                                                    <th scope="col">Quality Audience</th>
+                                                    <th scope="col">ER</th>
+                                                    <th scope="col">AQS</th>
+                                                    <th scope="col">Topics</th>
+                                                    <th scope="col"></th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td><img src="https://instagram.flhr6-1.fna.fbcdn.net/v/t51.2885-19/s320x320/25015714_158561678243878_1583054580856389632_n.jpg?_nc_ht=instagram.flhr6-1.fna.fbcdn.net&_nc_ohc=gQ-XH0pPL60AX-M8DNg&oh=9d26240482a73504974281ad75688aa8&oe=5E99BAEC" class="img-fluid avatar avatar-ex-sm rounded-pill" alt=""></td>
+                                                        <td><a href="https://www.instagram.com/caloriefixes/">@caloriefixes</a></td>
+                                                        <td>2,206.53K</td>
+                                                        <td>1,612.09K</td>
+                                                        <td>1.14%</td>
+                                                        <td>Very Good</td>
+                                                        <td>Food</td>
+                                                        <td><a href=" https://hypeauditor.com/preview/caloriefixes/?source=test" target="_blank" class="btn btn-primary btn-sm mr-2">🔥 Download report</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>img</td>
+                                                        <td>@caloriefixes</td>
+                                                        <td>2,206.53K</td>
+                                                        <td>1,612.09K</td>
+                                                        <td>1.14%</td>
+                                                        <td>Very Good</td>
+                                                        <td>Food</td>
+                                                        <td><a href="javascript:void(0)" class="btn btn-primary btn-sm mr-2">🔥 Download report</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>img</td>
+                                                        <td>@caloriefixes</td>
+                                                        <td>2,206.53K</td>
+                                                        <td>1,612.09K</td>
+                                                        <td>1.14%</td>
+                                                        <td>Very Good</td>
+                                                        <td>Food</td>
+                                                        <td><a href="javascript:void(0)" class="btn btn-primary btn-sm mr-2">🔥 Download report</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Table End -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col mt-4 pt-2">
+                                <div class="component-wrapper rounded shadow">
+                                    <div class="pr-4 pl-4 pt-4 pb-0">
+                                        <h4 class="title mb-0">Top Related Websites</h4>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4">
+                                                <div class="blog position-relative overflow-hidden shadow rounded">
+                                                    <div class="position-relative">
+                                                        <img src="{% static 'images/blog/01.jpg' %}" class="img-fluid rounded-top" alt="">
+                                                        <div class="overlay rounded-top bg-dark"></div>
+                                                    </div>
+                                                    <div class="content p-4">
+                                                        <h4><a href="javascript:void(0)" class="title text-dark">Design your apps in your own way</a></h4>
+                                                        <div class="post-meta mt-3">
+                                                            <a href="javascript:void(0)" class="text-muted float-right readmore">Read More <i class="mdi mdi-chevron-right"></i></a>
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="list-inline-item mr-2"><a href="javascript:void(0)" class="text-muted like"><i class="mdi mdi-heart-outline mr-1"></i>33</a></li>
+                                                                <li class="list-inline-item"><a href="javascript:void(0)" class="text-muted comments"><i class="mdi mdi-comment-outline mr-1"></i>08</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="author">
+                                                        <small class="text-light user d-block"><i class="mdi mdi-account"></i> Calvin Carlo</small>
+                                                        <small class="text-light date"><i class="mdi mdi-calendar-check"></i> 13th August, 2019</small>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-4 col-md-4">
+                                                <div class="blog position-relative overflow-hidden shadow rounded">
+                                                    <div class="position-relative">
+                                                        <img src="{% static 'images/blog/01.jpg' %}" class="img-fluid rounded-top" alt="">
+                                                        <div class="overlay rounded-top bg-dark"></div>
+                                                    </div>
+                                                    <div class="content p-4">
+                                                        <h4><a href="javascript:void(0)" class="title text-dark">How apps is changing the IT world</a></h4>
+                                                        <div class="post-meta mt-3">
+                                                            <a href="javascript:void(0)" class="text-muted float-right readmore">Read More <i class="mdi mdi-chevron-right"></i></a>
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="list-inline-item mr-2"><a href="javascript:void(0)" class="text-muted like"><i class="mdi mdi-heart-outline mr-1"></i>33</a></li>
+                                                                <li class="list-inline-item"><a href="javascript:void(0)" class="text-muted comments"><i class="mdi mdi-comment-outline mr-1"></i>08</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="author">
+                                                        <small class="text-light user d-block"><i class="mdi mdi-account"></i> Calvin Carlo</small>
+                                                        <small class="text-light date"><i class="mdi mdi-calendar-check"></i> 13th August, 2019</small>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-4 col-md-4">
+                                                <div class="blog position-relative overflow-hidden shadow rounded">
+                                                    <div class="position-relative">
+                                                        <img src="{% static 'images/blog/01.jpg' %}" class="img-fluid rounded-top" alt="">
+                                                        <div class="overlay rounded-top bg-dark"></div>
+                                                    </div>
+                                                    <div class="content p-4">
+                                                        <h4><a href="javascript:void(0)" class="title text-dark">Smartest Applications for Business</a></h4>
+                                                        <div class="post-meta mt-3">
+                                                            <a href="javascript:void(0)" class="text-muted float-right readmore">Read More <i class="mdi mdi-chevron-right"></i></a>
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="list-inline-item mr-2"><a href="javascript:void(0)" class="text-muted like"><i class="mdi mdi-heart-outline mr-1"></i>33</a></li>
+                                                                <li class="list-inline-item"><a href="javascript:void(0)" class="text-muted comments"><i class="mdi mdi-comment-outline mr-1"></i>08</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="author">
+                                                        <small class="text-light user d-block"><i class="mdi mdi-account"></i> Calvin Carlo</small>
+                                                        <small class="text-light date"><i class="mdi mdi-calendar-check"></i> 13th August, 2019</small>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% else %}
+        <!-- Price Start -->
+        <section class="section" id="pricing">
+            <div class="container mt-60">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="section-title mb-4 pb-2">
+                            <h4 class="title mb-4">Stay ahead of the trends as the world changes</h4>
+                            <!-- <p class="text-muted para-desc mb-0 mx-auto">Start working with <span class="text-primary font-weight-bold">TrendLab</span>. that can provide everything you need to generate awareness, drive traffic, connect.</p> -->
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row align-items-center">
+                    <div class="col-12 mt-0 pt-2">
+                        <div class="text-center">
+                            <ul class="nav nav-pills rounded-pill justify-content-center d-inline-block border py-1 px-2" id="pills-tab" role="tablist">
+                                <li class="nav-item d-inline-block">
+                                    <a class="nav-link px-3 rounded-pill monthly" id="Monthly" data-toggle="pill" href="#Month" role="tab" aria-controls="Month" aria-selected="true">Monthly</a>
+                                </li>
+                                <li class="nav-item d-inline-block">
+                                    <a class="nav-link px-3 rounded-pill active yearly" id="Yearly" data-toggle="pill" href="#Year" role="tab" aria-controls="Year" aria-selected="false">Yearly <span class="badge badge-success rounded">20% Off </span></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade active show" id="Year" role="tabpanel" aria-labelledby="Yearly">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                        <div class="pricing-rates business-rate shadow bg-light p-4 rounded">
+                                            <h2 class="title mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> Basic</h2>
+                                            <div class="d-flex mb-4 text-center">
+                                                <span class="h4 mb-0 mt-2">$</span>
+                                                <span class="price h1 mb-0">39</span>
+                                                <span class="h4 align-self-end mb-1">/mo</span>
+                                            </div>
+
+                                            <ul class="feature list-unstyled pl-0">
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search up to <b>10</b> Trends</li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 3 Trends</b> Newsletter</li>
+                                            </ul>
+                                            <a href="javascript:void(0)" class="btn btn-primary mt-4">Subscribe</a>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                        <div class="pricing-rates business-rate shadow bg-white p-4 rounded">
+                                            <h2 class="title text-primary mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> STARTER</h2>
+                                            <div class="d-flex mb-4 text-center">
+                                                <span class="h4 mb-0 mt-2">$</span>
+                                                <span class="price h1 mb-0">119</span>
+                                                <span class="h4 align-self-end mb-1">/mo</span>
+                                            </div>
+
+                                            <ul class="feature list-unstyled pl-0">
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search up to <b>40</b> Trends</li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 5 Trends</b> Newsletter</li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 3 <a data-toggle="tooltip" data-placement="right" title="'The steep part of the S-curve that most young markets and industries experience at some point, where the winners get sorted from the losers.' – Harvard Business Review">Hypergrowth Trends<span class="text-danger">*</span></a></b></li>
+                                                <!-- Harvard Business Review, which defined it as “the steep part of the S-curve that most young markets and industries experience at some point, where the winners get sorted from the losers.” -->
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Trends Insights + Enhanced Data</b></li>
+                                                <!-- <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Export Data</b></li> -->
+                                            </ul>
+                                            <a href="javascript:void(0)" class="btn btn-primary mt-4">Get Started</a>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                        <div class="pricing-rates business-rate shadow bg-light p-4 rounded">
+                                            <h2 class="title mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> <span class="text-success font-weight-bold">ENTERPRISE</span></h2>
+                                            <div class="d-flex mb-4 text-center">
+                                                <span class="h4 align-self-end mb-1">From: &nbsp;</span>
+                                                <span class="h4 mb-0 mt-2">$</span>
+                                                <span class="price h1 mb-0">240</span>
+                                                <span class="h4 align-self-end mb-1">/mo</span>
+                                            </div>
+
+                                            <ul class="feature list-unstyled pl-0">
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search from <b>+100</b> Trends</li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><span class="text-primary font-weight-bold">TrendLab.</span> <b>STARTER</b></li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Custom Trends Analysis + PDF report</b></li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>R&D Teams Support</b></li>
+                                                <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>API Access</b></li>
+                                            </ul>
+                                            <a href="#enterprise" class="btn btn-primary mt-4">Contact Us</a>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div>
+
+                            <div class="tab-pane fade" id="Month" role="tabpanel" aria-labelledby="Monthly">
+                              <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                    <div class="pricing-rates business-rate shadow bg-light p-4 rounded">
+                                        <h2 class="title mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> Basic</h2>
+                                        <div class="d-flex mb-4 text-center">
+                                            <span class="h4 mb-0 mt-2">$</span>
+                                            <span class="price h1 mb-0">49</span>
+                                            <span class="h4 align-self-end mb-1">/mo</span>
+                                        </div>
+
+                                        <ul class="feature list-unstyled pl-0">
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search up to <b>10</b> Trends</li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 3 Trends</b> Newsletter</li>
+                                        </ul>
+                                        <a href="javascript:void(0)" class="btn btn-primary mt-4">Subscribe</a>
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                    <div class="pricing-rates business-rate shadow bg-white p-4 rounded">
+                                        <h2 class="title text-primary mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> STARTER</h2>
+                                        <div class="d-flex mb-4 text-center">
+                                            <span class="h4 mb-0 mt-2">$</span>
+                                            <span class="price h1 mb-0">149</span>
+                                            <span class="h4 align-self-end mb-1">/mo</span>
+                                        </div>
+
+                                        <ul class="feature list-unstyled pl-0">
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search up to <b>40</b> Trends</li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 5 Trends</b> Newsletter</li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Top 3 <a data-toggle="tooltip" data-placement="right" title="'The steep part of the S-curve that most young markets and industries experience at some point, where the winners get sorted from the losers.' – Harvard Business Review">Hypergrowth Trends<span class="text-danger">*</span></a></b></li>
+                                            <!-- Harvard Business Review, which defined it as “the steep part of the S-curve that most young markets and industries experience at some point, where the winners get sorted from the losers.” -->
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Trends Insights + Enhanced Data</b></li>
+                                            <!-- <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Export Data</b></li> -->
+                                        </ul>
+                                        <a href="javascript:void(0)" class="btn btn-primary mt-4">Get Started</a>
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                                    <div class="pricing-rates business-rate shadow bg-light p-4 rounded">
+                                        <h2 class="title mb-4"><span class="text-primary font-weight-bold">TrendLab.</span> <span class="text-success font-weight-bold">ENTERPRISE</span></h2>
+                                        <div class="d-flex mb-4 text-center">
+                                            <span class="h4 align-self-end mb-1">From: &nbsp;</span>
+                                            <span class="h4 mb-0 mt-2">$</span>
+                                            <span class="price h1 mb-0">299</span>
+                                            <span class="h4 align-self-end mb-1">/mo</span>
+                                        </div>
+
+                                        <ul class="feature list-unstyled pl-0">
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i>Search from <b>+100</b> Trends</li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><span class="text-primary font-weight-bold">TrendLab.</span> <b>STARTER</b></li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>Custom Trends Analysis + PDF report</b></li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>R&D Teams Support</b></li>
+                                            <li class="feature-list"><i class="mdi mdi-check text-success h5 mr-1"></i><b>API Access</b></li>
+                                        </ul>
+                                        <a href="#enterprise" class="btn btn-primary mt-4">Contact Us</a>
+                                    </div>
+                                </div><!--end col-->
+                              </div><!--end row-->
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        {% endif %}
+        <!-- End Work Detail -->
+        <script>
+            let relatedTopics = {{ related_topics |safe }};
+            let relatedQueries = {{ related_queries | safe}};
+            let chartData = {{ chart_data | safe }};
+            let newsStore = {{ top_news | safe }};
+            let regionInterest = {{ region_interest | safe}};
+            let timeSpan = "{{ timespan | safe }}";
+            let s_queryTerm  = "{{ query_term | safe }}";
+            let searchResTerm  = "{{ search_term_name | safe }}";
+            let year_filter = '{{year_filter}}';
+            let geolocation = '{{ current_country }}';
+            {#var relatedTopics = null;#}
+            {#if ("{{ related_topics |safe }}" !== 'None') {#}
+            {#    relatedTopics = {{ related_topics |safe }};#}
+            {# }#}
+            {##}
+            {#var relatedQueries = null;#}
+            {#if ("{{ related_queries | safe}}" !== 'None'){#}
+            {#    relatedQueries = {{ related_queries | safe}};#}
+            {# }#}
+
+            {#var chartData = {{ chart_data | safe }};#}
+            {##}
+            {#var newsStore = null;#}
+            {#if ("{{ top_news | safe }}" !== 'None'){#}
+            {#    newsStore = {{ top_news | safe }};#}
+            {# }#}
+            {##}
+            {#var regionInterest = null;#}
+            {#if ("{{ region_interest | safe}}" !== 'None'){#}
+            {#    regionInterest = {{ region_interest | safe}};#}
+            {# }#}
+
+            {#var timeSpan = "{{ timespan | safe }}";#}
+            {#var s_queryTerm  = "{{ query_term | safe }}";#}
+            {#var searchResTerm  = "{{ search_term_name | safe }}";#}
+            {#var year_filter = '{{year_filter}}';#}
+
+
+        </script>
+
+{% endblock %}
